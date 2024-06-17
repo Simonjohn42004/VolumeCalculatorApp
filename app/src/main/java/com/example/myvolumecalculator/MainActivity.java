@@ -3,8 +3,8 @@ package com.example.myvolumecalculator;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,7 +14,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements GridItemClickListener {
     GridView myGridView;
     ArrayList<ShapeClass> ShapesList;
     MyCustomAdapter adapter;
@@ -41,13 +41,14 @@ public class MainActivity extends AppCompatActivity {
         ShapesList.add(s4);
         adapter=new MyCustomAdapter(getApplicationContext(),ShapesList);
         myGridView.setAdapter(adapter);
+        adapter.setCustomlistener(this);
 
-        myGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent i= new Intent(getApplicationContext(), SphereCalculator.class);
-                startActivity(i);
-            }
-        });
+
+    }
+
+    @Override
+    public void onItemClicked(View view, int position) {
+        Intent intent=new Intent(this,CylinderCalculator.class);
+        startActivity(intent);
     }
 }

@@ -13,6 +13,15 @@
         android:theme="@style/Theme.MyVolumeCalculator"
         tools:targetApi="31">
         <activity
+            android:name=".CuboidCalculator"
+            android:exported="false" />
+        <activity
+            android:name=".CubeCalculator"
+            android:exported="false" />
+        <activity
+            android:name=".CylinderCalculator"
+            android:exported="false" />
+        <activity
             android:name=".SphereCalculator"
             android:exported="false" />
         <activity

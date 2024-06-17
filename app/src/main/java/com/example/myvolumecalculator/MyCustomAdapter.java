@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,15 +18,34 @@ import java.util.List;
 public class MyCustomAdapter extends ArrayAdapter<ShapeClass> {
     Context context;
     private ArrayList<ShapeClass>shapelist;
+    private static GridItemClickListener customlistener;
 
-    public MyCustomAdapter(@NonNull Context context,@NonNull ArrayList<ShapeClass> shapelist) {
+    public  void setCustomlistener(GridItemClickListener customlistener) {
+        MyCustomAdapter.customlistener = customlistener;
+    }
+
+    public MyCustomAdapter(@NonNull Context context, @NonNull ArrayList<ShapeClass> shapelist) {
         super(context, R.layout.grid_custom_layout, shapelist);
         this.shapelist=shapelist;
         this.context=context;
     }
-    private static class ViewHolder{
+    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         TextView shapenameholder;
         ImageView shapeimageholder;
+
+        public ViewHolder(View myview){
+            super(myview);
+            shapenameholder=myview.findViewById(R.id.layoutTextView);
+            shapeimageholder=myview.findViewById(R.id.layoutImageView);
+            myview.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+
+            customlistener.onItemClicked(v,getAdapterPosition());
+
+        }
     }
 
     @NonNull
@@ -35,13 +55,11 @@ public class MyCustomAdapter extends ArrayAdapter<ShapeClass> {
         ViewHolder holder;
         if(convertView==null){
             convertView= LayoutInflater.from(getContext()).inflate(R.layout.grid_custom_layout,parent,false);
-            holder=new ViewHolder();
-            holder.shapenameholder=convertView.findViewById(R.id.layoutTextView);
-            holder.shapeimageholder=convertView.findViewById(R.id.layoutImageView);
+            holder= new ViewHolder(convertView);
             convertView.setTag(holder);
         }
         else{
-            holder=(ViewHolder) convertView.getTag();
+            holder =(ViewHolder) convertView.getTag();
         }
         holder.shapenameholder.setText(shapes.getShapename());
         holder.shapeimageholder.setImageResource(shapes.getShapeimage());
